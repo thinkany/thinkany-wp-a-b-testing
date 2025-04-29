@@ -30,6 +30,39 @@ require_once THINKANY_WP_AB_TESTING_PATH . 'includes/class-ab-testing.php';
 require_once THINKANY_WP_AB_TESTING_PATH . 'includes/class-acf-fields.php';
 
 /**
+ * Load plugin text domain for translations
+ */
+function thinkany_wp_ab_testing_load_textdomain() {
+    load_plugin_textdomain(
+        'thinkany-wp-a-b-testing',
+        false,
+        dirname(plugin_basename(__FILE__)) . '/languages'
+    );
+}
+add_action('plugins_loaded', 'thinkany_wp_ab_testing_load_textdomain');
+
+/**
+ * Enqueue admin scripts and styles
+ */
+function thinkany_wp_ab_testing_admin_enqueue_scripts() {
+    wp_enqueue_style(
+        'thinkany-wp-a-b-testing-admin',
+        THINKANY_WP_AB_TESTING_URL . 'assets/css/admin.css',
+        array(),
+        THINKANY_WP_AB_TESTING_VERSION
+    );
+    
+    wp_enqueue_script(
+        'thinkany-wp-a-b-testing-admin',
+        THINKANY_WP_AB_TESTING_URL . 'assets/js/admin.js',
+        array('jquery'),
+        THINKANY_WP_AB_TESTING_VERSION,
+        true
+    );
+}
+add_action('admin_enqueue_scripts', 'thinkany_wp_ab_testing_admin_enqueue_scripts');
+
+/**
  * Initialize the plugin
  */
 function thinkany_wp_ab_testing_init() {
@@ -62,8 +95,9 @@ function thinkany_wp_ab_testing_acf_notice() {
     ?>
     <div class="notice notice-error is-dismissible">
         <p><?php printf(
-            __('The thinkany WP A/B Testing plugin requires Advanced Custom Fields (ACF) to be installed and activated. Please <a href="%s">install and activate ACF</a> first.', 'thinkany-wp-a-b-testing'),
-            admin_url('plugin-install.php?tab=search&s=advanced-custom-fields')
+            /* translators: %s: URL to the plugin installation page */
+            esc_html__('The thinkany WP A/B Testing plugin requires Advanced Custom Fields (ACF) to be installed and activated. Please <a href="%s">install and activate ACF</a> first.', 'thinkany-wp-a-b-testing'),
+            esc_url(admin_url('plugin-install.php?tab=search&s=advanced-custom-fields'))
         ); ?></p>
     </div>
     <?php
@@ -85,10 +119,11 @@ function thinkany_wp_ab_testing_activate() {
         // Display error message
         wp_die(
             sprintf(
-                __('The thinkany WP A/B Testing plugin requires Advanced Custom Fields (ACF) to be installed and activated. Please <a href="%s">install and activate ACF</a> first.', 'thinkany-wp-a-b-testing'),
-                admin_url('plugin-install.php?tab=search&s=advanced-custom-fields')
+                /* translators: %s: URL to the plugin installation page */
+                esc_html__('The thinkany WP A/B Testing plugin requires Advanced Custom Fields (ACF) to be installed and activated. Please <a href="%s">install and activate ACF</a> first.', 'thinkany-wp-a-b-testing'),
+                esc_url(admin_url('plugin-install.php?tab=search&s=advanced-custom-fields'))
             ),
-            __('Plugin Activation Error', 'thinkany-wp-a-b-testing'),
+            esc_html__('Plugin Activation Error', 'thinkany-wp-a-b-testing'),
             array('back_link' => true)
         );
         
@@ -174,7 +209,7 @@ function thinkany_wp_ab_testing_admin_notice() {
     if (get_option('thinkany_wp_ab_testing_acf_notice')) {
         ?>
         <div class="notice notice-warning is-dismissible">
-            <p><?php _e('ThinkAny WP A/B Testing requires Advanced Custom Fields (ACF) to be installed and activated.', 'thinkany-wp-a-b-testing'); ?></p>
+            <p><?php esc_html_e('ThinkAny WP A/B Testing requires Advanced Custom Fields (ACF) to be installed and activated.', 'thinkany-wp-a-b-testing'); ?></p>
         </div>
         <?php
         // Delete the option so the notice is only shown once

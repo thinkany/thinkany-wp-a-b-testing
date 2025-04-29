@@ -97,7 +97,7 @@ class ThinkAny_WP_AB_Testing {
             // Check if the cookie exists
             if (isset($_COOKIE[$cookie_name])) {
                 // Return the variant stored in the cookie
-                return $_COOKIE[$cookie_name];
+                return wp_unslash($_COOKIE[$cookie_name]);
             }
             
             // No cookie found, determine which variant to serve
@@ -127,7 +127,7 @@ class ThinkAny_WP_AB_Testing {
      */
     private function get_variant_by_ratio($split_ratio) {
         // Use split ratio to determine which variant to serve
-        $random = mt_rand(1, 100);
+        $random = wp_rand(1, 100);
         if ($random <= $split_ratio) {
             return 'A';
         } else {
@@ -265,8 +265,8 @@ class ThinkAny_WP_AB_Testing {
      */
     public function add_dashboard_widget() {
         wp_add_dashboard_widget(
-            'thinkany_ab_testing_dashboard_widget',
-            __('A/B Testing Statistics', 'thinkany-wp-a-b-testing'),
+            'thinkany_wp_ab_testing_dashboard_widget',
+            esc_html__('A/B Testing Statistics', 'thinkany-wp-a-b-testing'),
             array($this, 'render_dashboard_widget')
         );
     }
@@ -282,16 +282,16 @@ class ThinkAny_WP_AB_Testing {
         $ab_posts = $this->get_ab_testing_posts();
         
         if (empty($ab_posts)) {
-            echo '<p>' . __('No pages or posts currently have A/B testing enabled.', 'thinkany-wp-a-b-testing') . '</p>';
+            echo '<p>' . esc_html__('No pages or posts currently have A/B testing enabled.', 'thinkany-wp-a-b-testing') . '</p>';
             return;
         }
         
         echo '<table class="wp-list-table widefat fixed striped">';
         echo '<thead>';
         echo '<tr>';
-        echo '<th>' . __('Page/Post', 'thinkany-wp-a-b-testing') . '</th>';
-        echo '<th>' . __('Views (A)', 'thinkany-wp-a-b-testing') . '</th>';
-        echo '<th>' . __('Views (B)', 'thinkany-wp-a-b-testing') . '</th>';
+        echo '<th>' . esc_html__('Page/Post', 'thinkany-wp-a-b-testing') . '</th>';
+        echo '<th>' . esc_html__('Views (A)', 'thinkany-wp-a-b-testing') . '</th>';
+        echo '<th>' . esc_html__('Views (B)', 'thinkany-wp-a-b-testing') . '</th>';
         echo '</tr>';
         echo '</thead>';
         echo '<tbody>';
@@ -314,7 +314,7 @@ class ThinkAny_WP_AB_Testing {
             $views_b = $stats_b ? intval($stats_b) : 0;
             
             echo '<tr>';
-            echo '<td><a href="' . get_edit_post_link($post_id) . '">' . esc_html($post->post_title) . '</a></td>';
+            echo '<td><a href="' . esc_url(get_edit_post_link($post_id)) . '">' . esc_html($post->post_title) . '</a></td>';
             echo '<td>' . esc_html($views_a) . '</td>';
             echo '<td>' . esc_html($views_b) . '</td>';
             echo '</tr>';
@@ -323,7 +323,7 @@ class ThinkAny_WP_AB_Testing {
         echo '</tbody>';
         echo '</table>';
         
-        echo '<p><a href="' . admin_url('options-general.php?page=thinkany-wp-a-b-testing') . '">' . __('View detailed statistics', 'thinkany-wp-a-b-testing') . '</a></p>';
+        echo '<p><a href="' . esc_url(admin_url('options-general.php?page=thinkany-wp-a-b-testing')) . '">' . esc_html__('View detailed statistics', 'thinkany-wp-a-b-testing') . '</a></p>';
     }
     
     /**

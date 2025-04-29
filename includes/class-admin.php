@@ -34,8 +34,8 @@ class ThinkAny_WP_AB_Testing_Admin {
     
     public function add_admin_menu() {
         add_options_page(
-            __('thinkany WP A/B Testing Settings', 'thinkany-wp-a-b-testing'),
-            __('thinkany A/B Testing', 'thinkany-wp-a-b-testing'),
+            esc_html__('thinkany WP A/B Testing Settings', 'thinkany-wp-a-b-testing'),
+            esc_html__('thinkany A/B Testing', 'thinkany-wp-a-b-testing'),
             'manage_options',
             'thinkany-wp-a-b-testing',
             array($this, 'render_settings_page')
@@ -58,7 +58,7 @@ class ThinkAny_WP_AB_Testing_Admin {
         
         add_settings_field(
             'enabled',
-            __('Enable A/B Testing', 'thinkany-wp-a-b-testing'),
+            esc_html__('Enable A/B Testing', 'thinkany-wp-a-b-testing'),
             array($this, 'render_enabled_field'),
             'thinkany-wp-a-b-testing',
             'thinkany_wp_ab_testing_main_section'
@@ -66,7 +66,7 @@ class ThinkAny_WP_AB_Testing_Admin {
         
         add_settings_field(
             'split_ratio',
-            __('Split Ratio (A/B)', 'thinkany-wp-a-b-testing'),
+            esc_html__('Split Ratio (A/B)', 'thinkany-wp-a-b-testing'),
             array($this, 'render_split_ratio_field'),
             'thinkany-wp-a-b-testing',
             'thinkany_wp_ab_testing_main_section'
@@ -75,7 +75,7 @@ class ThinkAny_WP_AB_Testing_Admin {
         // Add session persistence option
         add_settings_field(
             'session_persistence',
-            __('Session Persistence', 'thinkany-wp-a-b-testing'),
+            esc_html__('Session Persistence', 'thinkany-wp-a-b-testing'),
             array($this, 'render_session_persistence_field'),
             'thinkany-wp-a-b-testing',
             'thinkany_wp_ab_testing_main_section'
@@ -84,7 +84,7 @@ class ThinkAny_WP_AB_Testing_Admin {
         // Add cookie duration option
         add_settings_field(
             'cookie_duration',
-            __('Cookie Duration (days)', 'thinkany-wp-a-b-testing'),
+            esc_html__('Cookie Duration (days)', 'thinkany-wp-a-b-testing'),
             array($this, 'render_cookie_duration_field'),
             'thinkany-wp-a-b-testing',
             'thinkany_wp_ab_testing_main_section'
@@ -93,7 +93,7 @@ class ThinkAny_WP_AB_Testing_Admin {
         // Add data deletion option
         add_settings_field(
             'delete_data',
-            __('Data Management', 'thinkany-wp-a-b-testing'),
+            esc_html__('Data Management', 'thinkany-wp-a-b-testing'),
             array($this, 'render_delete_data_field'),
             'thinkany-wp-a-b-testing',
             'thinkany_wp_ab_testing_main_section'
@@ -124,13 +124,13 @@ class ThinkAny_WP_AB_Testing_Admin {
     }
     
     public function add_settings_link($links) {
-        $settings_link = '<a href="options-general.php?page=thinkany-wp-a-b-testing">' . __('Settings', 'thinkany-wp-a-b-testing') . '</a>';
+        $settings_link = '<a href="options-general.php?page=thinkany-wp-a-b-testing">' . esc_html__('Settings', 'thinkany-wp-a-b-testing') . '</a>';
         array_unshift($links, $settings_link);
         return $links;
     }
     
     public function render_section_info() {
-        echo '<p>' . __('Configure the A/B testing settings below.', 'thinkany-wp-a-b-testing') . '</p>';
+        echo '<p>' . esc_html__('Configure the A/B testing settings below.', 'thinkany-wp-a-b-testing') . '</p>';
     }
     
     public function render_enabled_field() {
@@ -141,7 +141,7 @@ class ThinkAny_WP_AB_Testing_Admin {
             <input type="checkbox" id="enabled" name="thinkany_wp_ab_testing_settings[enabled]" ' . checked($enabled, true, false) . ' />
             <span class="thinkany-toggle-slider"></span>
         </label>';
-        echo '<span class="thinkany-toggle-label">' . __('Enable A/B testing functionality', 'thinkany-wp-a-b-testing') . '</span>';
+        echo '<span class="thinkany-toggle-label">' . esc_html__('Enable A/B testing functionality', 'thinkany-wp-a-b-testing') . '</span>';
     }
     
     public function render_split_ratio_field() {
@@ -153,9 +153,9 @@ class ThinkAny_WP_AB_Testing_Admin {
         
         echo '<div style="display: flex; align-items: center;">';
         echo '<input type="range" id="split_ratio" name="thinkany_wp_ab_testing_settings[split_ratio]" min="10" max="90" step="10" value="' . esc_attr($split_ratio) . '" style="width: 200px;" />';
-        echo '<span id="split_ratio_display" style="margin-left: 10px;">' . esc_html($split_ratio) . '% / ' . (100 - $split_ratio) . '%</span>';
+        echo '<span id="split_ratio_display" style="margin-left: 10px;">' . esc_html($split_ratio) . '% / ' . esc_html(100 - $split_ratio) . '%</span>';
         echo '</div>';
-        echo '<p class="description">' . __('Adjust the split ratio between variant A and variant B.', 'thinkany-wp-a-b-testing') . '</p>';
+        echo '<p class="description">' . esc_html__('Adjust the split ratio between variant A and variant B.', 'thinkany-wp-a-b-testing') . '</p>';
         
         echo '<script>
             jQuery(document).ready(function($) {
@@ -175,7 +175,7 @@ class ThinkAny_WP_AB_Testing_Admin {
             <input type="checkbox" id="session_persistence" name="thinkany_wp_ab_testing_settings[session_persistence]" ' . checked($session_persistence, true, false) . ' />
             <span class="thinkany-toggle-slider"></span>
         </label>';
-        echo '<span class="thinkany-toggle-label">' . __('Enable session persistence for A/B testing', 'thinkany-wp-a-b-testing') . '</span>';
+        echo '<span class="thinkany-toggle-label">' . esc_html__('Enable session persistence for A/B testing', 'thinkany-wp-a-b-testing') . '</span>';
         
         // Add JavaScript to show/hide cookie duration field based on checkbox state
         echo '<script>
@@ -204,7 +204,7 @@ class ThinkAny_WP_AB_Testing_Admin {
         
         echo '<div class="cookie-duration-field">';
         echo '<input type="number" id="cookie_duration" name="thinkany_wp_ab_testing_settings[cookie_duration]" value="' . esc_attr($cookie_duration) . '" min="1" max="365" />';
-        echo '<p class="description">' . __('Set the duration of the A/B testing cookie in days.', 'thinkany-wp-a-b-testing') . '</p>';
+        echo '<p class="description">' . esc_html__('Set the duration of the A/B testing cookie in days.', 'thinkany-wp-a-b-testing') . '</p>';
         echo '</div>';
     }
     
@@ -216,8 +216,8 @@ class ThinkAny_WP_AB_Testing_Admin {
             <input type="checkbox" id="delete_data" name="thinkany_wp_ab_testing_settings[delete_data]" ' . checked($delete_data, true, false) . ' />
             <span class="thinkany-toggle-slider"></span>
         </label>';
-        echo '<span class="thinkany-toggle-label">' . __('Delete all A/B testing data when plugin is uninstalled', 'thinkany-wp-a-b-testing') . '</span>';
-        echo '<p class="description">' . __('If enabled, all A/B testing data will be deleted when the plugin is uninstalled. This includes all statistics and settings.', 'thinkany-wp-a-b-testing') . '</p>';
+        echo '<span class="thinkany-toggle-label">' . esc_html__('Delete all A/B testing data when plugin is uninstalled', 'thinkany-wp-a-b-testing') . '</span>';
+        echo '<p class="description">' . esc_html__('If enabled, all A/B testing data will be deleted when the plugin is uninstalled. This includes all statistics and settings.', 'thinkany-wp-a-b-testing') . '</p>';
     }
     
     public function render_settings_page() {
@@ -298,7 +298,7 @@ class ThinkAny_WP_AB_Testing_Admin {
             <?php
             // Check if ACF is active
             if (!class_exists('ACF')) {
-                echo '<div class="notice notice-error"><p>' . __('Advanced Custom Fields (ACF) is required for this plugin to work. Please install and activate ACF.', 'thinkany-wp-a-b-testing') . '</p></div>';
+                echo '<div class="notice notice-error"><p>' . esc_html__('Advanced Custom Fields (ACF) is required for this plugin to work. Please install and activate ACF.', 'thinkany-wp-a-b-testing') . '</p></div>';
             }
             
             // Flush stats to database before displaying
@@ -314,7 +314,7 @@ class ThinkAny_WP_AB_Testing_Admin {
                 ?>
             </form>
             
-            <h2><?php _e('A/B Testing Statistics', 'thinkany-wp-a-b-testing'); ?></h2>
+            <h2><?php echo esc_html__('A/B Testing Statistics', 'thinkany-wp-a-b-testing'); ?></h2>
             <?php $this->render_ab_testing_stats(); ?>
         </div>
         <?php
@@ -328,18 +328,18 @@ class ThinkAny_WP_AB_Testing_Admin {
         $ab_posts = $this->get_ab_testing_posts();
         
         if (empty($ab_posts)) {
-            echo '<p>' . __('No pages or posts currently have A/B testing enabled.', 'thinkany-wp-a-b-testing') . '</p>';
+            echo '<p>' . esc_html__('No pages or posts currently have A/B testing enabled.', 'thinkany-wp-a-b-testing') . '</p>';
             return;
         }
         
         echo '<table class="wp-list-table widefat fixed striped">';
         echo '<thead>';
         echo '<tr>';
-        echo '<th>' . __('Page/Post', 'thinkany-wp-a-b-testing') . '</th>';
-        echo '<th>' . __('Variant B', 'thinkany-wp-a-b-testing') . '</th>';
-        echo '<th>' . __('Views (A)', 'thinkany-wp-a-b-testing') . '</th>';
-        echo '<th>' . __('Views (B)', 'thinkany-wp-a-b-testing') . '</th>';
-        echo '<th>' . __('Last Served', 'thinkany-wp-a-b-testing') . '</th>';
+        echo '<th>' . esc_html__('Page/Post', 'thinkany-wp-a-b-testing') . '</th>';
+        echo '<th>' . esc_html__('Variant B', 'thinkany-wp-a-b-testing') . '</th>';
+        echo '<th>' . esc_html__('Views (A)', 'thinkany-wp-a-b-testing') . '</th>';
+        echo '<th>' . esc_html__('Views (B)', 'thinkany-wp-a-b-testing') . '</th>';
+        echo '<th>' . esc_html__('Last Served', 'thinkany-wp-a-b-testing') . '</th>';
         echo '</tr>';
         echo '</thead>';
         echo '<tbody>';
@@ -357,11 +357,11 @@ class ThinkAny_WP_AB_Testing_Admin {
             
             $views_a = $stats ? intval($stats->views_a) : 0;
             $views_b = $stats ? intval($stats->views_b) : 0;
-            $last_served = $stats ? $stats->last_served : __('Never', 'thinkany-wp-a-b-testing');
+            $last_served = $stats ? $stats->last_served : esc_html__('Never', 'thinkany-wp-a-b-testing');
             
             echo '<tr>';
-            echo '<td><a href="' . get_edit_post_link($post_id) . '">' . esc_html($post->post_title) . '</a></td>';
-            echo '<td>' . ($variant_b ? '<a href="' . get_edit_post_link($variant_b_id) . '">' . esc_html($variant_b->post_title) . '</a>' : __('None', 'thinkany-wp-a-b-testing')) . '</td>';
+            echo '<td><a href="' . esc_url(get_edit_post_link($post_id)) . '">' . esc_html($post->post_title) . '</a></td>';
+            echo '<td>' . ($variant_b ? '<a href="' . esc_url(get_edit_post_link($variant_b_id)) . '">' . esc_html($variant_b->post_title) . '</a>' : esc_html__('None', 'thinkany-wp-a-b-testing')) . '</td>';
             echo '<td>' . esc_html($views_a) . '</td>';
             echo '<td>' . esc_html($views_b) . '</td>';
             echo '<td>' . esc_html($last_served) . '</td>';
@@ -400,7 +400,7 @@ class ThinkAny_WP_AB_Testing_Admin {
     }
     
     public function add_ab_testing_column($columns) {
-        $columns['ab_testing'] = __('A/B Testing', 'thinkany-wp-a-b-testing');
+        $columns['ab_testing'] = esc_html__('A/B Testing', 'thinkany-wp-a-b-testing');
         return $columns;
     }
     
@@ -415,15 +415,15 @@ class ThinkAny_WP_AB_Testing_Admin {
             $variant_b_id = get_field('ab_testing_variant_b', $post_id);
             $variant_b = get_post($variant_b_id);
             
-            echo '<span style="color: green;"><span class="dashicons dashicons-yes"></span> ' . __('Enabled', 'thinkany-wp-a-b-testing') . '</span>';
+            echo '<span style="color: green;"><span class="dashicons dashicons-yes"></span> ' . esc_html__('Enabled', 'thinkany-wp-a-b-testing') . '</span>';
             
             if ($variant_b) {
-                echo '<br><small>' . __('Variant B:', 'thinkany-wp-a-b-testing') . ' <a href="' . get_edit_post_link($variant_b_id) . '">' . esc_html($variant_b->post_title) . '</a></small>';
+                echo '<br><small>' . esc_html__('Variant B:', 'thinkany-wp-a-b-testing') . ' <a href="' . esc_url(get_edit_post_link($variant_b_id)) . '">' . esc_html($variant_b->post_title) . '</a></small>';
             } else {
-                echo '<br><small>' . __('Variant B not set', 'thinkany-wp-a-b-testing') . '</small>';
+                echo '<br><small>' . esc_html__('Variant B not set', 'thinkany-wp-a-b-testing') . '</small>';
             }
         } else {
-            echo '<span style="color: #999;"><span class="dashicons dashicons-no-alt"></span> ' . __('Disabled', 'thinkany-wp-a-b-testing') . '</span>';
+            echo '<span style="color: #999;"><span class="dashicons dashicons-no-alt"></span> ' . esc_html__('Disabled', 'thinkany-wp-a-b-testing') . '</span>';
         }
     }
 }
