@@ -1,4 +1,4 @@
-# ThinkAny WP A/B Testing
+# thinkany WP A/B Testing
 
 Simple A/B testing for WordPress pages and posts with ACF integration.
 
@@ -10,7 +10,7 @@ The plugin integrates with Advanced Custom Fields (ACF) to provide a simple inte
 
 ## Features
 
-* Easy setup with ACF integration
+* Easy setup with ACF integration (Advanced Custom Fields required)
 * 50/50 split testing by default (configurable in 10% increments)
 * Works with both pages and posts
 * Dashboard widget for quick stats overview
@@ -90,7 +90,7 @@ Currently, the plugin only supports testing two variants (A and B). Support for 
 
 ## License
 
-ThinkAny WP A/B Testing is licensed under the GPL v2 or later.
+thinkany WP A/B Testing is licensed under the GPL v2 or later.
 
 ```
 This program is free software; you can redistribute it and/or
@@ -110,4 +110,4 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 ## Credits
 
-Developed by [ThinkAny](https://thinkany.com)
+Developed by [thinkany](https://thinkany.com)
