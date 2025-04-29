@@ -135,10 +135,13 @@ class ThinkAny_WP_AB_Testing_Admin {
     
     public function render_enabled_field() {
         $options = get_option('thinkany_wp_ab_testing_settings');
-        $enabled = isset($options['enabled']) ? $options['enabled'] : true;
+        $enabled = isset($options['enabled']) ? $options['enabled'] : false;
         
-        echo '<input type="checkbox" id="enabled" name="thinkany_wp_ab_testing_settings[enabled]" ' . checked($enabled, true, false) . ' />';
-        echo '<label for="enabled">' . __('Enable A/B testing functionality', 'thinkany-wp-a-b-testing') . '</label>';
+        echo '<label class="thinkany-toggle-switch">
+            <input type="checkbox" id="enabled" name="thinkany_wp_ab_testing_settings[enabled]" ' . checked($enabled, true, false) . ' />
+            <span class="thinkany-toggle-slider"></span>
+        </label>';
+        echo '<span class="thinkany-toggle-label">' . __('Enable A/B testing functionality', 'thinkany-wp-a-b-testing') . '</span>';
     }
     
     public function render_split_ratio_field() {
@@ -168,24 +171,53 @@ class ThinkAny_WP_AB_Testing_Admin {
         $options = get_option('thinkany_wp_ab_testing_settings');
         $session_persistence = isset($options['session_persistence']) ? $options['session_persistence'] : false;
         
-        echo '<input type="checkbox" id="session_persistence" name="thinkany_wp_ab_testing_settings[session_persistence]" ' . checked($session_persistence, true, false) . ' />';
-        echo '<label for="session_persistence">' . __('Enable session persistence for A/B testing', 'thinkany-wp-a-b-testing') . '</label>';
+        echo '<label class="thinkany-toggle-switch">
+            <input type="checkbox" id="session_persistence" name="thinkany_wp_ab_testing_settings[session_persistence]" ' . checked($session_persistence, true, false) . ' />
+            <span class="thinkany-toggle-slider"></span>
+        </label>';
+        echo '<span class="thinkany-toggle-label">' . __('Enable session persistence for A/B testing', 'thinkany-wp-a-b-testing') . '</span>';
+        
+        // Add JavaScript to show/hide cookie duration field based on checkbox state
+        echo '<script>
+            jQuery(document).ready(function($) {
+                // Function to toggle cookie duration field visibility
+                function toggleCookieDuration() {
+                    if($("#session_persistence").is(":checked")) {
+                        $(".cookie-duration-field").show();
+                    } else {
+                        $(".cookie-duration-field").hide();
+                    }
+                }
+                
+                // Initial state
+                toggleCookieDuration();
+                
+                // Toggle on change
+                $("#session_persistence").on("change", toggleCookieDuration);
+            });
+        </script>';
     }
     
     public function render_cookie_duration_field() {
         $options = get_option('thinkany_wp_ab_testing_settings');
         $cookie_duration = isset($options['cookie_duration']) ? $options['cookie_duration'] : 7;
         
+        echo '<div class="cookie-duration-field">';
         echo '<input type="number" id="cookie_duration" name="thinkany_wp_ab_testing_settings[cookie_duration]" value="' . esc_attr($cookie_duration) . '" min="1" max="365" />';
         echo '<p class="description">' . __('Set the duration of the A/B testing cookie in days.', 'thinkany-wp-a-b-testing') . '</p>';
+        echo '</div>';
     }
     
     public function render_delete_data_field() {
         $options = get_option('thinkany_wp_ab_testing_settings');
         $delete_data = isset($options['delete_data']) ? $options['delete_data'] : false;
         
-        echo '<input type="checkbox" id="delete_data" name="thinkany_wp_ab_testing_settings[delete_data]" ' . checked($delete_data, true, false) . ' />';
-        echo '<label for="delete_data">' . __('Delete all A/B testing data when plugin is uninstalled', 'thinkany-wp-a-b-testing') . '</label>';
+        echo '<label class="thinkany-toggle-switch">
+            <input type="checkbox" id="delete_data" name="thinkany_wp_ab_testing_settings[delete_data]" ' . checked($delete_data, true, false) . ' />
+            <span class="thinkany-toggle-slider"></span>
+        </label>';
+        echo '<span class="thinkany-toggle-label">' . __('Delete all A/B testing data when plugin is uninstalled', 'thinkany-wp-a-b-testing') . '</span>';
+        echo '<p class="description">' . __('If enabled, all A/B testing data will be deleted when the plugin is uninstalled. This includes all statistics and settings.', 'thinkany-wp-a-b-testing') . '</p>';
     }
     
     public function render_settings_page() {
@@ -196,12 +228,85 @@ class ThinkAny_WP_AB_Testing_Admin {
         // Flush all cached stats to the database before displaying
         $ab_testing = ThinkAny_WP_AB_Testing::get_instance();
         $ab_testing->flush_stats_to_database();
-        
         ?>
         <div class="wrap">
             <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
             
-            <form action="options.php" method="post">
+            <style>
+                /* Toggle Switch Styles */
+                .thinkany-toggle-switch {
+                    position: relative;
+                    display: inline-block;
+                    width: 30px;
+                    height: 17px;
+                    margin-right: 10px;
+                    vertical-align: middle;
+                }
+                
+                .thinkany-toggle-switch input {
+                    opacity: 0;
+                    width: 0;
+                    height: 0;
+                }
+                
+                .thinkany-toggle-slider {
+                    position: absolute;
+                    cursor: pointer;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background-color: #ccc;
+                    transition: .4s;
+                    border-radius: 17px;
+                }
+                
+                .thinkany-toggle-slider:before {
+                    position: absolute;
+                    content: "";
+                    height: 13px;
+                    width: 13px;
+                    left: 2px;
+                    bottom: 2px;
+                    background-color: white;
+                    transition: .4s;
+                    border-radius: 50%;
+                }
+                
+                input:checked + .thinkany-toggle-slider {
+                    background-color: #2271B1;
+                }
+                
+                input:focus + .thinkany-toggle-slider {
+                    box-shadow: 0 0 1px #2271B1;
+                }
+                
+                input:checked + .thinkany-toggle-slider:before {
+                    transform: translateX(13px);
+                }
+                
+                .thinkany-toggle-label {
+                    font-weight: 500;
+                    vertical-align: middle;
+                }
+                
+                .form-table td {
+                    padding: 20px 10px;
+                }
+            </style>
+            
+            <?php
+            // Check if ACF is active
+            if (!class_exists('ACF')) {
+                echo '<div class="notice notice-error"><p>' . __('Advanced Custom Fields (ACF) is required for this plugin to work. Please install and activate ACF.', 'thinkany-wp-a-b-testing') . '</p></div>';
+            }
+            
+            // Flush stats to database before displaying
+            $ab_testing = ThinkAny_WP_AB_Testing::get_instance();
+            $ab_testing->flush_stats_to_database();
+            ?>
+            
+            <form method="post" action="options.php">
                 <?php
                 settings_fields('thinkany_wp_ab_testing_settings_group');
                 do_settings_sections('thinkany-wp-a-b-testing');
@@ -209,12 +314,8 @@ class ThinkAny_WP_AB_Testing_Admin {
                 ?>
             </form>
             
-            <hr>
-            
             <h2><?php _e('A/B Testing Statistics', 'thinkany-wp-a-b-testing'); ?></h2>
-            
             <?php $this->render_ab_testing_stats(); ?>
-            
         </div>
         <?php
     }
