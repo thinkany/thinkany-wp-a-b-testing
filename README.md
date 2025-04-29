@@ -1,4 +1,4 @@
-# thinkany WP A/B Testing
+# thinkany WP A/B Testing (plugin)
 
 Simple A/B testing for WordPress pages and posts with ACF integration.
 
